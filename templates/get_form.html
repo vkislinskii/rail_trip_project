@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <h2>Trip search</h2>
+    <label for="name">Departure city:</label>
+    <input type="text" id="name" name="dep-city" required minlength="3" size="10" /> <br><br><br>
+
+    <label for="name">Departure day:</label>
+    <input type="text" id="name" name="dep-day" required minlength="3" size="15" placeholder="February 10, 2024"/> <br><br><br>
+
+    <label for="name">Arrival day:</label>
+    <input type="text" id="name" name="arr-day" required minlength="3" size="15" placeholder="February 10, 2024"/> <br><br><br>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>
