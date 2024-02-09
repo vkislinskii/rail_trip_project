@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-@3(&nzv!^m=**!ft+8h=^cco8+kn$u*#)v!^r)_y$)$uqmu7h8
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+#TIMEOUT = 600 #задал тут вручную (40 секунд нужно для поиска информации по одному городу назначения)
 
 # Application definition
 

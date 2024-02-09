@@ -9,14 +9,19 @@
 <form action="" method="POST">
     {% csrf_token %}
     <h2>Trip search</h2>
-    <label for="name">Departure city:</label>
-    <input type="text" id="name" name="dep-city" required minlength="3" size="10" /> <br><br><br>
+    <label for="dep_c">Departure city:</label>
+    <select name="dep-city" id="dep_c">
+    <option value="">--Please choose a city--</option>
+    <option value="Amsterdam">Amsterdam</option>
+    <option value="Rotterdam">Rotterdam</option>
+    <option value="Dortmund">Dortmund</option>
+    </select> <br><br><br>
 
-    <label for="name">Departure day:</label>
-    <input type="text" id="name" name="dep-day" required minlength="3" size="15" placeholder="February 10, 2024"/> <br><br><br>
+    <label for="dep_d">Departure day:</label>
+    <input type="text" id="dep_d" name="dep-day" required minlength="3" size="15" placeholder="February 10, 2024"/> <br><br><br>
 
-    <label for="name">Arrival day:</label>
-    <input type="text" id="name" name="arr-day" required minlength="3" size="15" placeholder="February 10, 2024"/> <br><br><br>
+    <label for="arr_d">Arrival day:</label>
+    <input type="text" id="arr_d" name="arr-day" required minlength="3" size="15" placeholder="February 11, 2024"/> <br><br><br>
     <button type="submit">Submit</button>
 </form>
 </body>

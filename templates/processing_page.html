@@ -5,6 +5,72 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Спасибо за информацию, за вами уже выехали {{dep_city}} {{dep_day}} {{arr_day}}</h1>
+<h1>Спасибо за ипользование сервиса</h1><br>
+<div class="result-body">
+    <h2>Поезда из города пребывания</h2>
+    <table class="table">
+        <tr>
+            <th>departure_city</th>
+            <th>destination_city</th>
+            <th>price</th>
+            <th>departure_day</th>
+            <th>departure_time</th>
+            <th>arrival_day</th>
+            <th>arrival_time</th>
+        </tr>
+        {% for i in lst_trains_start%}
+            <td>{{i.departure_city}}</td>
+            <td>{{i.destination_city}}</td>
+            <td>{{i.price}}</td>
+            <td>{{i.departure_day}}</td>
+            <td>{{i.departure_time}}</td>
+            <td>{{i.arrival_day}}</td>
+            <td>{{i.arrival_time}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br><br>
+    <h2>Поезда из города путешествия</h2>
+    <table class="table">
+        <tr>
+            <th>departure_city</th>
+            <th>destination_city</th>
+            <th>price</th>
+            <th>departure_day</th>
+            <th>departure_time</th>
+            <th>arrival_day</th>
+            <th>arrival_time</th>
+        </tr>
+        {% for i in lst_trains_back%}
+            <td>{{i.departure_city}}</td>
+            <td>{{i.destination_city}}</td>
+            <td>{{i.price}}</td>
+            <td>{{i.departure_day}}</td>
+            <td>{{i.departure_time}}</td>
+            <td>{{i.arrival_day}}</td>
+            <td>{{i.arrival_time}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br><br><br>
+    <h2>Точки интереса в городе путешествия</h2>
+    <table class="table">
+        <tr>
+            <th>name</th>
+            <th>address</th>
+            <th>ranking</th>
+            <th>rating</th>
+            <th>subcategory</th>
+        </tr>
+        {% for i in lst_objects%}
+            <td>{{i.name}}</td>
+            <td>{{i.address}}</td>
+            <td>{{i.ranking}}</td>
+            <td>{{i.rating}}</td>
+            <td>{{i.subcategory}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div><br><br><br>
 </body>
 </html>
