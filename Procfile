@@ -1,1 +1,1 @@
-web: gunicorn rail_trip_project.wsgi
+web: gunicorn rail_trip.wsgi
