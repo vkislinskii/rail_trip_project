@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dokku": {
-      "predeploy": "playwright install && playwright install-deps"
+      "predeploy": "playwright install firefox&& playwright install-deps"
     }
   }
 }
