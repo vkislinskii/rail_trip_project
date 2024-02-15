@@ -28,7 +28,7 @@ def processing_page(request):
     x = request.POST['dep-city']
     date_start = request.POST['dep-day']
     date_back = request.POST['arr-day']
-    y = ['Utrecht', 'Berlin']
+    y = ['Utrecht']
     key_tr = '504C4C443DF8452183B91AE58961F70D'
 
     p = sync_playwright().start()
