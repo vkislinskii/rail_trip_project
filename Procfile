@@ -1,1 +1,1 @@
-web: gunicorn rail_trip.wsgi
+web: gunicorn rail_trip.wsgi --timeout 120
