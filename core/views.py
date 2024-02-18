@@ -182,6 +182,7 @@ def processing_page(request):
             table.add_row(lst_row)
             lst_trains_back.append(dics_details)
     print(lst_trains_back)
+    browser.close()
 
     #######################################################################################################################
     ## Блок №3: получение данных о точках интереса внутри городов
