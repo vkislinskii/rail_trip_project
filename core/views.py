@@ -28,7 +28,7 @@ def processing_page(request):
     x = request.POST['dep-city']
     date_start = request.POST['dep-day']
     date_back = request.POST['arr-day']
-    y = ['Utrecht']
+    y = ['Utrecht', 'Berlin']
     key_tr = '504C4C443DF8452183B91AE58961F70D'
 
     p = sync_playwright().start()
@@ -188,6 +188,7 @@ def processing_page(request):
     #######################################################################################################################
     ## Блок №3: получение данных о точках интереса внутри городов
     # 1. задаём город, который будет приходить из предыдущего этапа и ключ партнёра tripadvisor
+    lst_objects = []
     for i in range(len(y)):
         city = y[i]
 
@@ -198,18 +199,15 @@ def processing_page(request):
 
         # 3. создаём из строки со всеми данными лист с id точек интереса, по которому будем итерироваться при поиске деталей
         lst = []
-        for j in range(10):
+        for j in range(6):
             lst.append(json.loads(response_trip.text)['data'][j]['location_id'])
 
         # 4. создаём справочные списки: с интересующими параметрами и с ключами итогового словаря
-        parameters = ["['name']", "['address_obj']['address_string']", "['ranking_data']['ranking_string']"
+        parameters = ["['address_obj']['city']", "['name']", "['address_obj']['street1']", "['ranking_data']['ranking_string']"
             , "['rating']", "['groups'][0]['categories'][0]['name']"]
-        col_names = ['name', 'address', 'ranking', 'rating', 'subcategory']
+        col_names = ['city', 'name', 'address', 'ranking', 'rating', 'subcategory']
 
         # 5. вызываем location details реквест для получения нужных параметров и готовим данные для отрисовки в терминале
-        lst_objects = []
-        x = PrettyTable()
-        x.field_names = col_names
         for j in range(len(lst)):  # это объекты
             url = f"https://api.content.tripadvisor.com/api/v1/location/{lst[j]}/details?key={key_tr}&language=en&currency=USD"
             headers = {"accept": "application/json"}
@@ -226,9 +224,10 @@ def processing_page(request):
                     dics_details[key] = ''
                     lst_row.append('')
             lst_objects.append(dics_details)
-            x.add_row(lst_row)
     print(lst_objects)
 
-    return render(request, './processing_page.html', {'lst_trains_start':lst_trains_start,
+    return render(request, './processing_page.html', {'departure_city':x,
+                                                                        'destination_cities':y,
+                                                                        'lst_trains_start':lst_trains_start,
                                                                         'lst_trains_back':lst_trains_back,
                                                                         'lst_objects':lst_objects})
