@@ -183,7 +183,6 @@ def processing_page(request):
             lst_trains_back.append(dics_details)
     print(lst_trains_back)
     page.close()
-    context.close()
     browser.close()
 
     #######################################################################################################################
