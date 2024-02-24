@@ -5,34 +5,26 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Trips from {{departure_city}}</h1>
+<h1>Trips from {{departure_city}} {{date_start}} - {{date_back}}</h1>
 <div class="result-body">
     {% for j in destination_cities %}
     <div>
         <div style="float: left; width: 100%;">
         <h2>Destination city - {{j}}</h2>
         </div>
-        <div style="float: left; width: 50%;">
+        <div style="float: left; width: 20%;">
             <table class="table">
                 <caption>Поезда из города пребывания</caption>
                 <tr>
-                    <th>departure_city</th>
-                    <th>destination_city</th>
-                    <th>price</th>
-                    <th>departure_day</th>
                     <th>departure_time</th>
-                    <th>arrival_day</th>
                     <th>arrival_time</th>
+                    <th>price</th>
                 </tr>
                 {% for i in lst_trains_start%}
                     {% if i.destination_city == j %}
-                        <td>{{i.departure_city}}</td>
-                        <td>{{i.destination_city}}</td>
-                        <td>{{i.price}}</td>
-                        <td>{{i.departure_day}}</td>
                         <td>{{i.departure_time}}</td>
-                        <td>{{i.arrival_day}}</td>
                         <td>{{i.arrival_time}}</td>
+                        <td>{{i.price}}</td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -41,23 +33,15 @@
             <table class="table">
                 <caption>Поезда из города путешествия</caption>
                 <tr>
-                    <th>departure_city</th>
-                    <th>destination_city</th>
-                    <th>price</th>
-                    <th>departure_day</th>
                     <th>departure_time</th>
-                    <th>arrival_day</th>
                     <th>arrival_time</th>
+                    <th>price</th>
                 </tr>
                 {% for i in lst_trains_back%}
                     {% if i.departure_city == j %}
-                        <td>{{i.departure_city}}</td>
-                        <td>{{i.destination_city}}</td>
-                        <td>{{i.price}}</td>
-                        <td>{{i.departure_day}}</td>
                         <td>{{i.departure_time}}</td>
-                        <td>{{i.arrival_day}}</td>
                         <td>{{i.arrival_time}}</td>
+                        <td>{{i.price}}</td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -69,7 +53,6 @@
                 <tr>
                     <th>name</th>
                     <th>address</th>
-                    <th>ranking</th>
                     <th>rating</th>
                     <th>subcategory</th>
                 </tr>
@@ -77,7 +60,6 @@
                     {% if i.city == j %}
                         <td>{{i.name}}</td>
                         <td>{{i.address}}</td>
-                        <td>{{i.ranking}}</td>
                         <td>{{i.rating}}</td>
                         <td>{{i.subcategory}}</td>
                     {% endif %}

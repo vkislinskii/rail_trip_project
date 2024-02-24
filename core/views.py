@@ -184,6 +184,7 @@ def processing_page(request):
     print(lst_trains_back)
     page.close()
     browser.close()
+    p.stop()
 
     #######################################################################################################################
     ## Блок №3: получение данных о точках интереса внутри городов
@@ -227,6 +228,8 @@ def processing_page(request):
     print(lst_objects)
 
     return render(request, './processing_page.html', {'departure_city':x,
+                                                                        'date_start': date_start,
+                                                                        'date_back': date_back,
                                                                         'destination_cities':y,
                                                                         'lst_trains_start':lst_trains_start,
                                                                         'lst_trains_back':lst_trains_back,
