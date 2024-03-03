@@ -11,12 +11,22 @@ Access via http://45.12.72.86:33043/
 
 ## Screenshots
 
-<details><summary>First page</summary>![First page](/pictures/1.JPG "First page")</details>
-<details><summary>Form completion</summary>![Form completion](/pictures/2.jpg "Form completion")</details>
-<details><summary>Result page</summary>![Result page](/pictures/3.JPG "Result page")</details>
+<details><summary>First page</summary>     
+
+![First page](/pictures/1.JPG "First page")   
+</details>  
+
+<details><summary>Form completion</summary>       
+
+![Form completion](/pictures/2.jpg "Form completion")  
+</details>
+<details><summary>Result page</summary>     
+
+![Result page](/pictures/3.JPG "Result page")   
+</details>
 
 ## <details><summary>Screenshots</summary> 
-![First page](/pictures/1.JPG "First page") | | *First page* |
+![First page](/pictures/1.JPG "First page")
 
 | ![Form completion](/pictures/2.jpg "Form completion") | | *Form completion* |
 
