@@ -12,7 +12,9 @@ def index(request):
         return processing_page(request)
 
 def first_page(request):
-    return render(request, './get_form.html')
+    from datetime import datetime
+    today = datetime.today().strftime('%Y-%m-%d')
+    return render(request, './get_form.html', context={'today': today})
 
 def processing_page(request):
     import playwright
@@ -22,25 +24,30 @@ def processing_page(request):
     import requests
     import json
     from time import sleep
+    from datetime import datetime
 
     ## Блок №1: получение данных о пути туда
     # 1. задание вводных данных
     x = request.POST['dep-city']
-    date_start = request.POST['dep-day']
-    date_back = request.POST['arr-day']
+    date_start = datetime.strptime(request.POST['dep-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
+    date_back = datetime.strptime(request.POST['arr-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
+    now_m = int(datetime.now().strftime("%m"))
     y = ['Utrecht', 'Berlin']
     key_tr = '504C4C443DF8452183B91AE58961F70D'
-
+    print(date_start)
+    print(date_back)
+    print(now_m)
     p = sync_playwright().start()
     browser = p.firefox.launch() #headless=False)
     page = browser.new_page()
+    page.set_default_timeout(30000)
 
     # 2. запуск браузера и получение информации по жд билетам из текущего места нахождения пользователя
     lst_trains_start = []
     for i in range(len(y)):
 
         # 2.1. ввод городов маршрута
-        page.goto("https://saveatrain.com", timeout=0)
+        page.goto("https://saveatrain.com") #, timeout=0)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
@@ -55,6 +62,14 @@ def processing_page(request):
         page.wait_for_load_state('load')
         date = page.locator('input[id="main-form-departure-date"]')
         date.click()
+        # переключаемся на следующий месяц в случае необходимости
+        date_start_m = int(datetime.strptime(request.POST['dep-day'], '%Y-%m-%d').strftime("%m"))
+        while date_start_m > now_m:
+            date_start_m -= 1
+            next_mon = page.locator('button[aria-label="Next month"]')
+            sleep(3)
+            next_mon.click()
+
         txt_date2 = 'td[aria-label="' + date_start + '"]'
         date2 = page.locator(txt_date2)
         sleep(3)
@@ -66,10 +81,10 @@ def processing_page(request):
         page.is_visible('div.results-container')
 
         col_names = ['departure_city', 'destination_city', 'price', 'departure_day', 'departure_time', 'arrival_day',
-                     'arrival_time']
+                         'arrival_time']
         destination_city = y[i]
         departure_city = x
-
+        print(destination_city)
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
         table = PrettyTable()
         table.field_names = col_names
@@ -80,32 +95,35 @@ def processing_page(request):
             dics_details['departure_city'] = departure_city
             lst_row.append(destination_city)
             dics_details['destination_city'] = destination_city
-            html_ind = '#result-' + str(i)
-            html = page.inner_html(html_ind)
-            soup = BeautifulSoup(html, 'html.parser')
-            # print(soup.find_all('div'))
-            price_ind = 'price-' + str(i)
-            price = soup.find('p', {'id': price_ind}).text
-            dep_d_ind = 'departure-d-' + str(i)
-            dep_d = soup.find('p', {'id': dep_d_ind}).text
-            dep_t_ind = 'departure-t-' + str(i)
-            dep_t = soup.find('p', {'id': dep_t_ind}).text
-            arr_d_ind = 'arrival-d-' + str(i)
-            arr_d = soup.find('p', {'id': arr_d_ind}).text
-            arr_t_ind = 'arrival-t-' + str(i)
-            arr_t = soup.find('p', {'id': arr_t_ind}).text
-            lst_row.append(price)
-            dics_details['price'] = price
-            lst_row.append(dep_d)
-            dics_details['departure_day'] = dep_d
-            lst_row.append(dep_t)
-            dics_details['departure_time'] = dep_t
-            lst_row.append(arr_d)
-            dics_details['arrival_day'] = arr_d
-            lst_row.append(arr_t)
-            dics_details['arrival_time'] = arr_t
-            table.add_row(lst_row)
-            lst_trains_start.append(dics_details)
+            try:
+                html_ind = '#result-' + str(i)
+                html = page.inner_html(html_ind)
+                soup = BeautifulSoup(html, 'html.parser')
+                # print(soup.find_all('div'))
+                price_ind = 'price-' + str(i)
+                price = soup.find('p', {'id': price_ind}).text
+                dep_d_ind = 'departure-d-' + str(i)
+                dep_d = soup.find('p', {'id': dep_d_ind}).text
+                dep_t_ind = 'departure-t-' + str(i)
+                dep_t = soup.find('p', {'id': dep_t_ind}).text
+                arr_d_ind = 'arrival-d-' + str(i)
+                arr_d = soup.find('p', {'id': arr_d_ind}).text
+                arr_t_ind = 'arrival-t-' + str(i)
+                arr_t = soup.find('p', {'id': arr_t_ind}).text
+                lst_row.append(price)
+                dics_details['price'] = price
+                lst_row.append(dep_d)
+                dics_details['departure_day'] = dep_d
+                lst_row.append(dep_t)
+                dics_details['departure_time'] = dep_t
+                lst_row.append(arr_d)
+                dics_details['arrival_day'] = arr_d
+                lst_row.append(arr_t)
+                dics_details['arrival_time'] = arr_t
+                table.add_row(lst_row)
+                lst_trains_start.append(dics_details)
+            except:
+                break
     print(lst_trains_start)
     #######################################################################################################################
     ## Блок №2: получение данных о пути обратно
@@ -115,7 +133,7 @@ def processing_page(request):
     for i in range(len(y)):
 
         # 2.1. ввод городов маршрута
-        page.goto("https://saveatrain.com", timeout=0)
+        page.goto("https://saveatrain.com") #, timeout=0)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
@@ -130,7 +148,15 @@ def processing_page(request):
         page.wait_for_load_state('load')
         date = page.locator('input[id="main-form-departure-date"]')
         date.click()
+        # переключаемся на следующий месяц в случае необходимости
+        date_back_m = int(datetime.strptime(request.POST['arr-day'], '%Y-%m-%d').strftime("%m"))
+        while date_back_m > now_m:
+            date_back_m -= 1
+            next_mon = page.locator('button[aria-label="Next month"]')
+            sleep(3)
+            next_mon.click()
         txt_date2 = 'td[aria-label="' + date_back + '"]'
+        print(txt_date2)
         date2 = page.locator(txt_date2)
         sleep(3)
         date2.click()
@@ -144,7 +170,7 @@ def processing_page(request):
                      'arrival_time']
         departure_city = y[i]
         destination_city = x
-
+        print(destination_city)
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
         table = PrettyTable()
         table.field_names = col_names
@@ -155,32 +181,35 @@ def processing_page(request):
             dics_details['departure_city'] = departure_city
             lst_row.append(destination_city)
             dics_details['destination_city'] = destination_city
-            html_ind = '#result-' + str(i)
-            html = page.inner_html(html_ind)
-            soup = BeautifulSoup(html, 'html.parser')
-            # print(soup.find_all('div'))
-            price_ind = 'price-' + str(i)
-            price = soup.find('p', {'id': price_ind}).text
-            dep_d_ind = 'departure-d-' + str(i)
-            dep_d = soup.find('p', {'id': dep_d_ind}).text
-            dep_t_ind = 'departure-t-' + str(i)
-            dep_t = soup.find('p', {'id': dep_t_ind}).text
-            arr_d_ind = 'arrival-d-' + str(i)
-            arr_d = soup.find('p', {'id': arr_d_ind}).text
-            arr_t_ind = 'arrival-t-' + str(i)
-            arr_t = soup.find('p', {'id': arr_t_ind}).text
-            lst_row.append(price)
-            dics_details['price'] = price
-            lst_row.append(dep_d)
-            dics_details['departure_day'] = dep_d
-            lst_row.append(dep_t)
-            dics_details['departure_time'] = dep_t
-            lst_row.append(arr_d)
-            dics_details['arrival_day'] = arr_d
-            lst_row.append(arr_t)
-            dics_details['arrival_time'] = arr_t
-            table.add_row(lst_row)
-            lst_trains_back.append(dics_details)
+            try:
+                html_ind = '#result-' + str(i)
+                html = page.inner_html(html_ind)
+                soup = BeautifulSoup(html, 'html.parser')
+                # print(soup.find_all('div'))
+                price_ind = 'price-' + str(i)
+                price = soup.find('p', {'id': price_ind}).text
+                dep_d_ind = 'departure-d-' + str(i)
+                dep_d = soup.find('p', {'id': dep_d_ind}).text
+                dep_t_ind = 'departure-t-' + str(i)
+                dep_t = soup.find('p', {'id': dep_t_ind}).text
+                arr_d_ind = 'arrival-d-' + str(i)
+                arr_d = soup.find('p', {'id': arr_d_ind}).text
+                arr_t_ind = 'arrival-t-' + str(i)
+                arr_t = soup.find('p', {'id': arr_t_ind}).text
+                lst_row.append(price)
+                dics_details['price'] = price
+                lst_row.append(dep_d)
+                dics_details['departure_day'] = dep_d
+                lst_row.append(dep_t)
+                dics_details['departure_time'] = dep_t
+                lst_row.append(arr_d)
+                dics_details['arrival_day'] = arr_d
+                lst_row.append(arr_t)
+                dics_details['arrival_time'] = arr_t
+                table.add_row(lst_row)
+                lst_trains_back.append(dics_details)
+            except:
+                break
     print(lst_trains_back)
     page.close()
     browser.close()

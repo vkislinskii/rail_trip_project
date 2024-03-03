@@ -2,73 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trip search result</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+    h1 {
+        color: red;
+        text-align:center;
+    }
+    </style>
 </head>
 <body>
 <h1>Trips from {{departure_city}} {{date_start}} - {{date_back}}</h1>
-<div class="result-body">
+<div class="container text-center">
     {% for j in destination_cities %}
     <div>
-        <div style="float: left; width: 100%;">
+        <div>
         <h2>Destination city - {{j}}</h2>
         </div>
-        <div style="float: left; width: 20%;">
-            <table class="table">
-                <caption>Поезда из города пребывания</caption>
-                <tr>
-                    <th>departure_time</th>
-                    <th>arrival_time</th>
-                    <th>price</th>
-                </tr>
-                {% for i in lst_trains_start%}
-                    {% if i.destination_city == j %}
-                        <td>{{i.departure_time}}</td>
-                        <td>{{i.arrival_time}}</td>
-                        <td>{{i.price}}</td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </table>
-            <br>
-            <table class="table">
-                <caption>Поезда из города путешествия</caption>
-                <tr>
-                    <th>departure_time</th>
-                    <th>arrival_time</th>
-                    <th>price</th>
-                </tr>
-                {% for i in lst_trains_back%}
-                    {% if i.departure_city == j %}
-                        <td>{{i.departure_time}}</td>
-                        <td>{{i.arrival_time}}</td>
-                        <td>{{i.price}}</td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </table>
-        </div><br>
-        <div>
-            <table class="table">
-                <caption>Точки интереса в городе путешествия</caption>
-                <tr>
-                    <th>name</th>
-                    <th>address</th>
-                    <th>rating</th>
-                    <th>subcategory</th>
-                </tr>
-                {% for i in lst_objects%}
-                    {% if i.city == j %}
-                        <td>{{i.name}}</td>
-                        <td>{{i.address}}</td>
-                        <td>{{i.rating}}</td>
-                        <td>{{i.subcategory}}</td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-            </table>
-        </div><br><br><br>
+        <div class="row">
+            <div class="col-2">
+            </div><br>
+            <div class="col-3">
+                <div>
+                    <div>
+                        <div>Trains to the travel city</div>
+                            {% for i in lst_trains_start%}
+                                {% if i.destination_city == j %}
+                                    <div style="border: 1px solid black;">
+                                        <p>{{i.departure_time}} >> {{i.arrival_time}} // {{i.price}}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                    </div>
+                </div>
+                    <br>
+                <div>
+                    <div>
+                        <div>Trains back</div>
+                            {% for i in lst_trains_back%}
+                                {% if i.departure_city == j %}
+                                    <div style="border: 1px solid black;">
+                                        <p>{{i.departure_time}} >> {{i.arrival_time}} // {{i.price}}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                    </div>
+                </div>
+            </div><br>
+            <div class="col-5">
+                <div>
+                    <div>Points of interest in the travel city</div>
+                        {% for i in lst_objects%}
+                            {% if i.city == j %}
+                                <div style="border: 1px solid black;">
+                                    <p>{{i.name}} / {{i.address}} (rating - {{i.rating}})</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                </div>
+            </div><br>
+            <div class="col-2">
+            </div><br><br><br>
+        </div>
     </div>
+    <hr/>
     {% endfor %}
 </div><br><br><br>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body><br><br><br>
 </html>
