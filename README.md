@@ -1,15 +1,15 @@
 # rail_trip_project
 
 Demo project to demonstrate relevant programming skills
-### About 
+## About 
 Weekend trip search service.   
 The application searches for a city to visit depending on the user's departure city.   
 The user receives information on how to get by train to selected places, as well as a list of points of interest in each.
 
-### Run guide
+## Run guide
 Access via http://45.12.72.86:33043/
 
-### Screenshots
+## Screenshots
 
 <details><summary>First page</summary>     
 
@@ -25,7 +25,7 @@ Access via http://45.12.72.86:33043/
 ![Result page](/pictures/3.JPG "Result page")   
 </details>
 
-### Technology stack
+## Technology stack
 * Framework: Django
 * Containers: Dokku
 * DB: tbd
@@ -33,4 +33,4 @@ Access via http://45.12.72.86:33043/
 * Parsing: BeautifulSoup
 * Design: Bootstrap
 
-### <details><summary>Structure</summary>...</details>
+## <details><summary>Structure</summary>...</details>
