@@ -14,7 +14,27 @@ def index(request):
 def first_page(request):
     from datetime import datetime
     from core.models import Cities
-
+    Cities.objects.create(city='Berlin')
+    Cities.objects.create(city='Paris')
+    Cities.objects.create(city='Vein')
+    Cities.objects.create(city='Hamburg')
+    Cities.objects.create(city='Munich')
+    Cities.objects.create(city='Brussels')
+    Cities.objects.create(city='Cologne')
+    Cities.objects.create(city='Amsterdam')
+    Cities.objects.create(city='Copenhagen')
+    Cities.objects.create(city='Frankfurt')
+    Cities.objects.create(city='Rotterdam')
+    Cities.objects.create(city='Stuttgart')
+    Cities.objects.create(city='Dusseldorf')
+    Cities.objects.create(city='Leipzig')
+    Cities.objects.create(city='Dortmund')
+    Cities.objects.create(city='Essen')
+    Cities.objects.create(city='Bremen')
+    Cities.objects.create(city='Dresden')
+    Cities.objects.create(city='Hanover')
+    Cities.objects.create(city='Antwerp')
+    Cities.objects.create(city='Nuremberg')
     today = datetime.today().strftime('%Y-%m-%d')
     all_cities = Cities.objects.all()
     return render(request, './get_form.html', context={'today': today,
