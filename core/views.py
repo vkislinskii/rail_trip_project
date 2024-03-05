@@ -26,17 +26,16 @@ def first_page(request):
 
 def processing_page(request):
     ## Блок №1: получение данных о пути туда
-    dep_city = request.POST['dep-city']
+    # 1. задание вводных данных
+    x = request.POST['dep-city']
     date_start = datetime.strptime(request.POST['dep-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     date_back = datetime.strptime(request.POST['arr-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     now_m = int(datetime.now().strftime("%m"))
-    url = "https://saveatrain.com"
-
-    city = Cities.objects.get(city=dep_city)
-    dest_cities=[]
+    city = Cities.objects.get(city=x)
+    y=[]
     for i in RoutesDict.objects.filter(city_id_from=city.id):
         c = Cities.objects.get(id=i.city_id_to)
-        dest_cities.append(c.city)
+        y.append(c.city)
     #y = ['Utrecht', 'Berlin']
     key_tr = '504C4C443DF8452183B91AE58961F70D'
     p = sync_playwright().start()
@@ -46,14 +45,14 @@ def processing_page(request):
 
     # 2. запуск браузера и получение информации по жд билетам из текущего места нахождения пользователя
     lst_trains_start = []
-    for i in dest_cities:
+    for i in y:
 
         # 2.1. ввод городов маршрута
-        page.goto(url)
+        page.goto("https://saveatrain.com") #, timeout=0)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
-        search_from.type(dep_city)
+        search_from.type(x)
         search_to = page.locator('input[placeholder="To"]')
         search_to.click()
         search_to.clear()
@@ -85,7 +84,7 @@ def processing_page(request):
         col_names = ['departure_city', 'destination_city', 'price', 'departure_day', 'departure_time', 'arrival_day',
                          'arrival_time']
         destination_city = i
-        departure_city = dep_city
+        departure_city = x
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
         for i in range(1, 4):
             dics_details = {}
@@ -126,10 +125,10 @@ def processing_page(request):
 
     # 2. запуск браузера и получение информации по жд билетам из места путешествия в изначальную точку
     lst_trains_back = []
-    for i in dest_cities:
+    for i in y:
 
         # 2.1. ввод городов маршрута
-        page.goto(url)
+        page.goto("https://saveatrain.com") #, timeout=0)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
@@ -137,7 +136,7 @@ def processing_page(request):
         search_to = page.locator('input[placeholder="To"]')
         search_to.click()
         search_to.clear()
-        search_to.type(dep_city)
+        search_to.type(x)
         page.get_by_role("button", name="Search").click()
 
         # 2.2. ввод даты отправления
@@ -164,7 +163,7 @@ def processing_page(request):
         col_names = ['departure_city', 'destination_city', 'price', 'departure_day', 'departure_time', 'arrival_day',
                      'arrival_time']
         departure_city = i
-        destination_city = dep_city
+        destination_city = x
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
         for i in range(1, 4):
             dics_details = {}
@@ -209,7 +208,7 @@ def processing_page(request):
     ## Блок №3: получение данных о точках интереса внутри городов
     # 1. задаём город, который будет приходить из предыдущего этапа и ключ партнёра tripadvisor
     lst_objects = []
-    for i in dest_cities:
+    for i in y:
         city = i
 
         # 2. задаём url и получаем результат вызова 10 точек интереса для заданного города (трипадвизор выдаёт максимум 10 шт)
@@ -245,10 +244,10 @@ def processing_page(request):
                     lst_row.append('')
             lst_objects.append(dics_details)
 
-    return render(request, './processing_page.html', {'departure_city':dep_city,
+    return render(request, './processing_page.html', {'departure_city':x,
                                                                         'date_start': date_start,
                                                                         'date_back': date_back,
-                                                                        'destination_cities':dest_cities,
+                                                                        'destination_cities':y,
                                                                         'lst_trains_start':lst_trains_start,
                                                                         'lst_trains_back':lst_trains_back,
                                                                         'lst_objects':lst_objects})
