@@ -13,12 +13,8 @@ def index(request):
 
 def first_page(request):
     from datetime import datetime
-    from core.models import Cities
-
     today = datetime.today().strftime('%Y-%m-%d')
-    all_cities = Cities.objects.all()
-    return render(request, './get_form.html', context={'today': today,
-                                                                    'all_cities': all_cities})
+    return render(request, './get_form.html', context={'today': today})
 
 def processing_page(request):
     import playwright
@@ -29,9 +25,6 @@ def processing_page(request):
     import json
     from time import sleep
     from datetime import datetime
-    from core.models import Cities, TrainTrips, PointsOfInterest, RoutesDict
-
-
 
     ## Блок №1: получение данных о пути туда
     # 1. задание вводных данных
@@ -39,17 +32,11 @@ def processing_page(request):
     date_start = datetime.strptime(request.POST['dep-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     date_back = datetime.strptime(request.POST['arr-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     now_m = int(datetime.now().strftime("%m"))
-    city = Cities.objects.get(city=x)
-    y=[]
-    for i in RoutesDict.objects.filter(city_id_from=city.id):
-        c = Cities.objects.get(id=i.city_id_to)
-        y.append(c.city)
-        print(y)
-    #y = ['Utrecht', 'Berlin']
+    y = ['Utrecht', 'Berlin']
     key_tr = '504C4C443DF8452183B91AE58961F70D'
-    #print(date_start)
-    #print(date_back)
-    #print(now_m)
+    print(date_start)
+    print(date_back)
+    print(now_m)
     p = sync_playwright().start()
     browser = p.firefox.launch() #headless=False)
     page = browser.new_page()
@@ -97,6 +84,7 @@ def processing_page(request):
                          'arrival_time']
         destination_city = y[i]
         departure_city = x
+        print(destination_city)
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
         table = PrettyTable()
         table.field_names = col_names
