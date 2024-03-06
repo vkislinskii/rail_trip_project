@@ -30,7 +30,7 @@
                             {% for i in lst_trains_start%}
                                 {% if i.destination_city == j %}
                                     <div style="border: 1px solid black;">
-                                        <p>{{i.departure_time}} >> {{i.arrival_time}} // {{i.price}}</p>
+                                        <p>{{i.departure_t}} >> {{i.arrival_t}} // {{i.price}}</p>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -43,7 +43,7 @@
                             {% for i in lst_trains_back%}
                                 {% if i.departure_city == j %}
                                     <div style="border: 1px solid black;">
-                                        <p>{{i.departure_time}} >> {{i.arrival_time}} // {{i.price}}</p>
+                                        <p>{{i.departure_t}} >> {{i.arrival_t}} // {{i.price}}</p>
                                     </div>
                                 {% endif %}
                             {% endfor %}
