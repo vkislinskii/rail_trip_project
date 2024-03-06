@@ -1,9 +1,31 @@
-#from django.shortcuts import render
+import json
+from datetime import datetime
+from time import sleep
 
-# Create your views here.
-from django.http import HttpResponse
+import requests
+from bs4 import BeautifulSoup
 from django.shortcuts import render
+from playwright.sync_api import sync_playwright
 
+cities = {'Berlin': ['Leipzig', 'Dresden'],
+        'Paris': ['Brussels', 'Stuttgart'],
+        'Hamburg': ['Bremen', 'Berlin'],
+        'Munich': ['Nuremberg', 'Stuttgart'],
+        'Brussels': ['Antwerp', 'Rotterdam'],
+        'Cologne': ['Dusseldorf', 'Frankfurt'],
+        'Amsterdam': ['Rotterdam', 'Dortmund'],
+        'Frankfurt': ['Cologne', 'Leipzig'],
+        'Rotterdam': ['Antwerp', 'Amsterdam'],
+        'Stuttgart': ['Frankfurt', 'Munich'],
+        'Dusseldorf': ['Cologne', 'Dortmund'],
+        'Leipzig': ['Berlin', 'Hanover'],
+        'Dortmund': ['Dusseldorf', 'Hanover'],
+        'Essen': ['Dortmund', 'Dusseldorf'],
+        'Bremen': ['Hanover', 'Hamburg'],
+        'Dresden': ['Leipzig', 'Berlin'],
+        'Hanover': ['Bremen', 'Hamburg'],
+        'Antwerp': ['Brussels', 'Rotterdam'],
+        'Nuremberg': ['Stuttgart', 'Munich']}
 
 def index(request):
     if request.method == "GET":
@@ -12,31 +34,21 @@ def index(request):
         return processing_page(request)
 
 def first_page(request):
-    from datetime import datetime
     today = datetime.today().strftime('%Y-%m-%d')
-    return render(request, './get_form.html', context={'today': today})
+    return render(request, './get_form.html', context={'today': today, 'cities': cities})
 
 def processing_page(request):
-    import playwright
-    from playwright.sync_api import Page, expect, sync_playwright
-    from bs4 import BeautifulSoup
-    from prettytable import PrettyTable
-    import requests
-    import json
-    from time import sleep
-    from datetime import datetime
 
     ## Блок №1: получение данных о пути туда
     # 1. задание вводных данных
-    x = request.POST['dep-city']
+    dep_city = request.POST['dep-city']
     date_start = datetime.strptime(request.POST['dep-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     date_back = datetime.strptime(request.POST['arr-day'], '%Y-%m-%d').strftime("%B %d, %Y").replace(' 0', ' ')
     now_m = int(datetime.now().strftime("%m"))
-    y = ['Utrecht', 'Berlin']
+    dest_cities = cities[dep_city]
+    url = "https://saveatrain.com"
+
     key_tr = '504C4C443DF8452183B91AE58961F70D'
-    print(date_start)
-    print(date_back)
-    print(now_m)
     p = sync_playwright().start()
     browser = p.firefox.launch() #headless=False)
     page = browser.new_page()
@@ -44,18 +56,18 @@ def processing_page(request):
 
     # 2. запуск браузера и получение информации по жд билетам из текущего места нахождения пользователя
     lst_trains_start = []
-    for i in range(len(y)):
+    for i in dest_cities:
 
         # 2.1. ввод городов маршрута
-        page.goto("https://saveatrain.com") #, timeout=0)
+        page.goto(url)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
-        search_from.type(x)
+        search_from.type(dep_city)
         search_to = page.locator('input[placeholder="To"]')
         search_to.click()
         search_to.clear()
-        search_to.type(y[i])
+        search_to.type(i)
         page.get_by_role("button", name="Search").click()
 
         # 2.2. ввод даты отправления
@@ -82,12 +94,9 @@ def processing_page(request):
 
         col_names = ['departure_city', 'destination_city', 'price', 'departure_day', 'departure_time', 'arrival_day',
                          'arrival_time']
-        destination_city = y[i]
-        departure_city = x
-        print(destination_city)
+        destination_city = i
+        departure_city = dep_city
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
-        table = PrettyTable()
-        table.field_names = col_names
         for i in range(1, 4):
             dics_details = {}
             lst_row = []
@@ -99,7 +108,6 @@ def processing_page(request):
                 html_ind = '#result-' + str(i)
                 html = page.inner_html(html_ind)
                 soup = BeautifulSoup(html, 'html.parser')
-                # print(soup.find_all('div'))
                 price_ind = 'price-' + str(i)
                 price = soup.find('p', {'id': price_ind}).text
                 dep_d_ind = 'departure-d-' + str(i)
@@ -120,28 +128,26 @@ def processing_page(request):
                 dics_details['arrival_day'] = arr_d
                 lst_row.append(arr_t)
                 dics_details['arrival_time'] = arr_t
-                table.add_row(lst_row)
                 lst_trains_start.append(dics_details)
             except:
                 break
-    print(lst_trains_start)
     #######################################################################################################################
     ## Блок №2: получение данных о пути обратно
 
     # 2. запуск браузера и получение информации по жд билетам из места путешествия в изначальную точку
     lst_trains_back = []
-    for i in range(len(y)):
+    for i in dest_cities:
 
         # 2.1. ввод городов маршрута
-        page.goto("https://saveatrain.com") #, timeout=0)
+        page.goto(url)
         search_from = page.locator('input[placeholder="From"]')
         search_from.click()
         search_from.clear()
-        search_from.type(y[i])
+        search_from.type(i)
         search_to = page.locator('input[placeholder="To"]')
         search_to.click()
         search_to.clear()
-        search_to.type(x)
+        search_to.type(dep_city)
         page.get_by_role("button", name="Search").click()
 
         # 2.2. ввод даты отправления
@@ -156,7 +162,6 @@ def processing_page(request):
             sleep(3)
             next_mon.click()
         txt_date2 = 'td[aria-label="' + date_back + '"]'
-        print(txt_date2)
         date2 = page.locator(txt_date2)
         sleep(3)
         date2.click()
@@ -168,12 +173,9 @@ def processing_page(request):
 
         col_names = ['departure_city', 'destination_city', 'price', 'departure_day', 'departure_time', 'arrival_day',
                      'arrival_time']
-        departure_city = y[i]
-        destination_city = x
-        print(destination_city)
+        departure_city = i
+        destination_city = dep_city
         # цикл для того, чтобы выдернуть все нужные нам параметры маршрута
-        table = PrettyTable()
-        table.field_names = col_names
         for i in range(1, 4):
             dics_details = {}
             lst_row = []
@@ -185,7 +187,6 @@ def processing_page(request):
                 html_ind = '#result-' + str(i)
                 html = page.inner_html(html_ind)
                 soup = BeautifulSoup(html, 'html.parser')
-                # print(soup.find_all('div'))
                 price_ind = 'price-' + str(i)
                 price = soup.find('p', {'id': price_ind}).text
                 dep_d_ind = 'departure-d-' + str(i)
@@ -206,11 +207,9 @@ def processing_page(request):
                 dics_details['arrival_day'] = arr_d
                 lst_row.append(arr_t)
                 dics_details['arrival_time'] = arr_t
-                table.add_row(lst_row)
                 lst_trains_back.append(dics_details)
             except:
                 break
-    print(lst_trains_back)
     page.close()
     browser.close()
     p.stop()
@@ -219,8 +218,8 @@ def processing_page(request):
     ## Блок №3: получение данных о точках интереса внутри городов
     # 1. задаём город, который будет приходить из предыдущего этапа и ключ партнёра tripadvisor
     lst_objects = []
-    for i in range(len(y)):
-        city = y[i]
+    for i in dest_cities:
+        city = i
 
         # 2. задаём url и получаем результат вызова 10 точек интереса для заданного города (трипадвизор выдаёт максимум 10 шт)
         url = f"https://api.content.tripadvisor.com/api/v1/location/search?key={key_tr}&searchQuery={city}&category=attractions&address={city}&language=en"
@@ -254,12 +253,11 @@ def processing_page(request):
                     dics_details[key] = ''
                     lst_row.append('')
             lst_objects.append(dics_details)
-    print(lst_objects)
 
-    return render(request, './processing_page.html', {'departure_city':x,
+    return render(request, './processing_page.html', {'departure_city':dep_city,
                                                                         'date_start': date_start,
                                                                         'date_back': date_back,
-                                                                        'destination_cities':y,
+                                                                        'destination_cities':dest_cities,
                                                                         'lst_trains_start':lst_trains_start,
                                                                         'lst_trains_back':lst_trains_back,
                                                                         'lst_objects':lst_objects})

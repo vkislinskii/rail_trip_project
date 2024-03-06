@@ -14,9 +14,9 @@
     <label for="dep_c">Departure city:</label>
     <select name="dep-city" id="dep_c">
     <option value="">--Please choose a city--</option>
-    <option value="Amsterdam">Amsterdam</option>
-    <option value="Rotterdam">Rotterdam</option>
-    <option value="Dortmund">Dortmund</option>
+    {% for key in cities%}
+        <option value="{{key}}">{{key}}</option>
+    {% endfor %}
     </select> <br><br>
 
     <label for="dep_d">Departure day:</label>
