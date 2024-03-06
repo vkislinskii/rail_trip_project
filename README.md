@@ -7,7 +7,7 @@ The application searches for a city to visit depending on the user's departure c
 The user receives information on how to get by train to selected places, as well as a list of points of interest in each.
 
 ## Run guide
-Access via http://45.12.72.86:33043/
+Access via http://rail-trip-project.ru/
 
 ## Screenshots
 
@@ -28,9 +28,8 @@ Access via http://45.12.72.86:33043/
 ## Technology stack
 * Framework: Django
 * Containers: Dokku
-* DB: tbd
 * Web scraping: Playwright
 * Parsing: BeautifulSoup
 * Design: Bootstrap
 
-## <details><summary>Structure</summary>...</details>
+## <details><summary>User Flow Diagram</summary>![User Flow](/pictures/4.JPG "User Flow")</details>
