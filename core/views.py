@@ -147,7 +147,6 @@ def processing_page(request):
     now_m = int(datetime.now().strftime("%m"))
     dest_cities = cities[dep_city]
     url = "https://saveatrain.com"
-    key_tr = '504C4C443DF8452183B91AE58961F70D'
 
     lst_trains_start = find_train_tickets(dep_city, dest_cities, "forward", date_start, url, now_m)
     lst_trains_back = find_train_tickets(dep_city, dest_cities, "back", date_back, url, now_m)
