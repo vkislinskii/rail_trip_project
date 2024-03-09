@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from time import sleep
+import os
 
 import requests
 from bs4 import BeautifulSoup
@@ -112,7 +113,8 @@ def find_train_tickets(dep_city, dest_cities, direction, date_train, url, now_m)
     p.stop()
     return lst_trains
 
-def find_points_of_interest(key_tr, city, lst_objects):
+def find_points_of_interest(city, lst_objects):
+    key_tr = os.environ['key_tr']
     #1. getting attraction identifiers
     url = f"https://api.content.tripadvisor.com/api/v1/location/search?key={key_tr}&searchQuery={city}&category=attractions&address={city}&language=en"
     headers = {"accept": "application/json"}
@@ -153,7 +155,7 @@ def processing_page(request):
 
     lst_objects = []
     for city in dest_cities:
-        lst_objects.append(find_points_of_interest(key_tr, city, lst_objects))
+        lst_objects.append(find_points_of_interest(city, lst_objects))
 
     return render(request, './processing_page.html', {'departure_city':dep_city,
                                                                         'date_start': date_start,
