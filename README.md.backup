@@ -4,7 +4,7 @@ Demo project to demonstrate relevant programming skills
 ## About 
 Weekend trip search service.   
 The application searches for a city to visit depending on the user's departure city.   
-The user receives information on how to get by train to selected places, as well as a list of points of interest in each.
+The user receives information how to get to selected places by train, as well as a list of points of interest in each.
 
 ## How to use
 Access via http://rail-trip-project.ru/
