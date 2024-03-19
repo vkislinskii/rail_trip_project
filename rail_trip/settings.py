@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@3(&nzv!^m=**!ft+8h=^cco8+kn$u*#)v!^r)_y$)$uqmu7h8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['45.12.72.86', '127.0.0.1']
+ALLOWED_HOSTS = ['45.12.72.86', '127.0.0.1', 'dev.rail-trip-project.ru', 'rail-trip-project.ru']
 #TIMEOUT = 600 #задал тут вручную (40 секунд нужно для поиска информации по одному городу назначения)
 
 # Application definition
