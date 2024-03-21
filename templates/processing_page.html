@@ -15,17 +15,15 @@
         }
 
         h2  {
-            text-align: left;
-            font-weight: bold;
-            margin-bottom: 48px;
+            margin-bottom: 24px;
         }
 
         .row-j {
-            margin-bottom: 48px;
+            margin-bottom: 24px;
         }
 
         .table {
-            table-layout: fixed;
+            /*table-layout: fixed; enable for one line rows and wider layout*/
             background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -46,9 +44,10 @@
 </head>
 <body>
 <div class="container">
-    <h2>Trips from {{ departure_city }} <br> {{ date_start }} - {{ date_back }}</h2>
+    <h1>Trips from {{ departure_city }}</h1>
     <div class="result-body">
         {% for j in destination_cities %}
+        <h2>{{ j }}</h2>
         <div class="row row-j">
             <div class="col-md-4">
                 <div class="table-responsive">
@@ -102,7 +101,7 @@
             </div>
             <div class="col-md-8">
                 <div class="table-responsive">
-                    <div class="table-caption interest-table">Points of interest - {{ j }}</div>
+                    <div class="table-caption interest-table">{{ j }} points of interest</div>
                     <table class="table">
                         <colgroup>
                             <col style="width: 30%;">
