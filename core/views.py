@@ -21,7 +21,7 @@ def index(request):
     if request.method == "GET":
         return first_page(request)
     else:
-        return processing_page(request)
+        return processing_page(request) ## for quick testing replace with mock_render(request)
 
 
 def first_page(request):
@@ -160,3 +160,9 @@ def processing_page(request):
                                                       'lst_trains_start': lst_trains_start,
                                                       'lst_trains_back': lst_trains_back,
                                                       'lst_objects': lst_objects})
+
+def mock_render(request):
+    with open("dump.json") as file:
+        response_dict = json.load(file)
+
+    return render(request, './processing_page.html', response_dict)

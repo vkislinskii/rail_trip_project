@@ -1,0 +1,207 @@
+{
+    "departure_city": "Amsterdam",
+    "date_start": "April 1, 2024",
+    "date_back": "April 8, 2024",
+    "destination_cities": [
+        "Rotterdam",
+        "Dortmund"
+    ],
+    "lst_trains_start": [
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Rotterdam",
+            "price": "\u20ac17.90",
+            "departure_d": "April 1",
+            "departure_t": "06:35",
+            "arrival_d": "April 1",
+            "arrival_t": "07:48"
+        },
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Rotterdam",
+            "price": "\u20ac17.90",
+            "departure_d": "April 1",
+            "departure_t": "07:05",
+            "arrival_d": "April 1",
+            "arrival_t": "08:18"
+        },
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Rotterdam",
+            "price": "\u20ac20.80",
+            "departure_d": "April 1",
+            "departure_t": "06:55",
+            "arrival_d": "April 1",
+            "arrival_t": "07:36"
+        },
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Dortmund",
+            "price": "\u20ac40.90",
+            "departure_d": "April 1",
+            "departure_t": "06:38",
+            "arrival_d": "April 1",
+            "arrival_t": "09:53"
+        },
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Dortmund",
+            "price": "\u20ac40.90",
+            "departure_d": "April 1",
+            "departure_t": "08:08",
+            "arrival_d": "April 1",
+            "arrival_t": "11:14"
+        },
+        {
+            "departure_city": "Amsterdam",
+            "destination_city": "Dortmund",
+            "price": "\u20ac44.90",
+            "departure_d": "April 1",
+            "departure_t": "05:59",
+            "arrival_d": "April 1",
+            "arrival_t": "10:32"
+        }
+    ],
+    "lst_trains_back": [
+        {
+            "departure_city": "Rotterdam",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac17.90",
+            "departure_d": "April 8",
+            "departure_t": "06:20",
+            "arrival_d": "April 8",
+            "arrival_t": "07:35"
+        },
+        {
+            "departure_city": "Rotterdam",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac17.90",
+            "departure_d": "April 8",
+            "departure_t": "06:21",
+            "arrival_d": "April 8",
+            "arrival_t": "07:40"
+        },
+        {
+            "departure_city": "Rotterdam",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac17.90",
+            "departure_d": "April 8",
+            "departure_t": "06:24",
+            "arrival_d": "April 8",
+            "arrival_t": "07:41"
+        },
+        {
+            "departure_city": "Dortmund",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac19.90",
+            "departure_d": "April 8",
+            "departure_t": "09:13",
+            "arrival_d": "April 8",
+            "arrival_t": "13:05"
+        },
+        {
+            "departure_city": "Dortmund",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac49.90",
+            "departure_d": "April 8",
+            "departure_t": "08:36",
+            "arrival_d": "April 8",
+            "arrival_t": "11:29"
+        },
+        {
+            "departure_city": "Dortmund",
+            "destination_city": "Amsterdam",
+            "price": "\u20ac57.40",
+            "departure_d": "April 8",
+            "departure_t": "07:03",
+            "arrival_d": "April 8",
+            "arrival_t": "10:35"
+        }
+    ],
+    "lst_objects": [
+        {
+            "city": "Rotterdam",
+            "name": "Markthal",
+            "address": "Dominee Jan Scharpstraat 298",
+            "rating": "4.5",
+            "subcategory": "Shopping Malls"
+        },
+        {
+            "city": "Rotterdam",
+            "name": "Rotterdam Centraal Station",
+            "address": "Stationssingel 10",
+            "rating": "4.5",
+            "subcategory": "Points of Interest & Landmarks"
+        },
+        {
+            "city": "Rotterdam",
+            "name": "Miniworld Rotterdam",
+            "address": "Weena 745",
+            "rating": "4.5",
+            "subcategory": "Educational sites"
+        },
+        {
+            "city": "Rotterdam",
+            "name": "Kunsthal Rotterdam",
+            "address": "Westzeedijk 341",
+            "rating": "4.0",
+            "subcategory": "Art Museums"
+        },
+        {
+            "city": "Rotterdam",
+            "name": "Watertaxi Rotterdam",
+            "address": "Koninginnenhoofd 7",
+            "rating": "4.5",
+            "subcategory": "Ferries"
+        },
+        {
+            "city": "Rotterdam",
+            "name": "City Hall Rotterdam",
+            "address": "Coolsingel 40",
+            "rating": "4.0",
+            "subcategory": "Points of Interest & Landmarks"
+        },
+        {
+            "city": "Dortmund",
+            "name": "Markthal",
+            "address": "Dominee Jan Scharpstraat 298",
+            "rating": "4.5",
+            "subcategory": "Shopping Malls"
+        },
+        {
+            "city": "Dortmund",
+            "name": "Dortmund Centraal Station",
+            "address": "Stationssingel 10",
+            "rating": "4.5",
+            "subcategory": "Points of Interest & Landmarks"
+        },
+        {
+            "city": "Dortmund",
+            "name": "Miniworld Dortmund",
+            "address": "Weena 745",
+            "rating": "4.5",
+            "subcategory": "Educational sites"
+        },
+        {
+            "city": "Dortmund",
+            "name": "Kunsthal Dortmund",
+            "address": "Westzeedijk 341",
+            "rating": "4.0",
+            "subcategory": "Art Museums"
+        },
+        {
+            "city": "Dortmund",
+            "name": "Watertaxi Dortmund",
+            "address": "Koninginnenhoofd 7",
+            "rating": "4.5",
+            "subcategory": "Ferries"
+        },
+        {
+            "city": "Dortmund",
+            "name": "City Hall Dortmund",
+            "address": "Coolsingel 40",
+            "rating": "4.0",
+            "subcategory": "Points of Interest & Landmarks"
+        }
+    ]
+}
